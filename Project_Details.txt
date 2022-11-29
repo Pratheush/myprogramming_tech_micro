@@ -130,6 +130,10 @@ Hibernate: alter table t_orders_order_line_items_list add constraint FK3wdgw7hxm
 
 curl -X POST --header "Content-Type: application/json" -d '{"orderLineItemsDtoList":[{"skuCode":"asus rog laptop","price":98750,"quantity":1}]}' http://localhost:8087/api/order/
 
+curl -X POST --header "Content-Type: application/json" -d '{"orderLineItemsDtoList":[{"skuCode":"iphone_13","price":113000,"quantity":1}]}' http://localhost:8087/api/order/
+
+iphone_13
+
 private Long id;
     private String skuCode;
     private BigDecimal price;
@@ -156,22 +160,29 @@ UI/Acceptance tests: use containerized web browsers, compatible with Selenium, f
 
 
 
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+INVENTORY-SERVICE :::::::::::::::::::::::::::::::::
+
+
+
+
+curl -X POST --header "Content-Type: application/json" -d '{"product":{"id":"101","name" : "Samsung","description" : "Mobile","price" : 17999.0}}' http://localhost:8088/api/inventory/{sku-code}
+
+curl  http://localhost:8088/api/inventory/iphone_13
+
+curl -d '{"skuCode":"iphone_13"}'  http://localhost:8088/api/inventory/iphone_13
+
+
+
+curl http://localhost:8088/api/inventory?skuCode=iphone_13
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
+curl -X POST --header "Content-Type: application/json" -d '{"orderLineItemsDtoList":[{"skuCode":"iphone_13","price":113000,"quantity":1}]}'  http://localhost:8087/api/order/
 
 
 
