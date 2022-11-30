@@ -172,6 +172,9 @@ curl -X POST --header "Content-Type: application/json" -d '{"product":{"id":"101
 
 curl  http://localhost:8088/api/inventory/iphone_13
 
+
+
+THIS URL WILL NOT WORK BECAUSE I AM SUPPOSE TO POST Request-Parameter
 curl -d '{"skuCode":"iphone_13"}'  http://localhost:8088/api/inventory/iphone_13
 
 
@@ -181,8 +184,20 @@ curl http://localhost:8088/api/inventory?skuCode=iphone_13
 
 
 
-
 curl -X POST --header "Content-Type: application/json" -d '{"orderLineItemsDtoList":[{"skuCode":"iphone_13","price":113000,"quantity":1}]}'  http://localhost:8087/api/order/
+
+curl -X POST --header "Content-Type: application/json" -d '{"orderLineItemsDtoList":[{"skuCode":"iphone_13","price":300000000,"quantity":3}]}'  http://localhost:8087/api/order/
+
+
+
+
+
+
+
+
+
+
+
 
 
 

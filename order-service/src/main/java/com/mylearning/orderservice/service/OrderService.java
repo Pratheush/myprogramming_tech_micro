@@ -24,8 +24,12 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
 
+    //private String inventoryUrl="http:'//localhost:8088/api/inventory";
+
+    private String inventoryUrl="http://INVENTORY-SERVICE/api/inventory";
+
     //@Autowired
-    private final WebClient webClient;
+    private final WebClient.Builder webClientBuilder;
 
     public void placeOrder(OrderRequest orderRequest) {
         Order order = new Order();
@@ -44,8 +48,8 @@ public class OrderService {
                 .map(OrderLineItems::getSkuCode)
                 .collect(Collectors.toList());
 
-        InventoryResponse[] responses=webClient.get()
-                        .uri("http://localhost:8088/api/inventory",
+        InventoryResponse[] responses=webClientBuilder.build().get()
+                        .uri(inventoryUrl,
                                 uriBuilder -> uriBuilder.queryParam("skuCode",skuCodes).build())
                                 .retrieve()
                                         .bodyToMono(InventoryResponse[].class)

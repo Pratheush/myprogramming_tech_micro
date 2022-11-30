@@ -1,16 +1,15 @@
-package com.mylearning.productservice;
+package com.mylearning.apigateway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
-import org.springframework.data.mongodb.core.MongoTemplate;
 
 @SpringBootApplication
 @EnableEurekaClient
-public class ProductServiceApplication {
+public class ApiGatewayApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(ProductServiceApplication.class, args);
+        SpringApplication.run(ApiGatewayApplication.class, args);
     }
 
 }
