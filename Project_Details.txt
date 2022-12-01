@@ -194,11 +194,126 @@ curl -X POST --header "Content-Type: application/json" -d '{"orderLineItemsDtoLi
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+===================================================================================================================================================
+
+Spring-Security is Added in Discovery-Server so that when we call through api-gateway :: http://localhost:8080/eureka/web in browser it should
+open eureka page ,  as security is implemented in api-gateway it will not open so we need to add spring-security dependency and properties in Discovery-Server
+
+
+
+
+
+
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+EXTRAS::::::::::::::::::: CURL DIDN'T WORK WITH OAUTH2 IN MY CASE.
+
+
 Osps2QSIVTEd5WaHj25NeRWllYkyCp6Y
 
 "issuer": "http://localhost:8180/realms/myprogramming_tech_micro",
 authorization_endpoint": "http://localhost:8180/realms/myprogramming_tech_micro/protocol/openid-connect/auth",
 "token_endpoint": "http://localhost:8180/realms/myprogramming_tech_micro/protocol/openid-connect/token
+
+
+Grant Type :: Client Credentials
+Access Token URL:: http://localhost:8180/realms/myprogramming_tech_micro/protocol/openid-connect/token
+Realm :: myprogramming_tech_micro
+Cliend ID :: spring-cloudclient-programing-teq-micro
+Client Secret :: Osps2QSIVTEd5WaHj25NeRWllYkyCp6Y
+Scope :: openid ofline_access
+Client Authentication :: send as basic auth header
+
+get access token
+
+access token>>> token.....
+Token Type :: Bearer
+expires_in :: 300
+refresh_expires_in :: 0
+Header Prefix : Bearer
+
+
+curl http://localhost:8080/api/product/
+
+curl -X POST http://localhost:8080/api/order/
+
+curl -i -X POST 'https://{{hostname}}/oauth/token' \ 
+  -H "authorization: Basic {{base64([clientId]:[clientSecret])}}" \
+  -H 'cache-control: no-cache' \
+  -H 'content-type: application/x-www-form-urlencoded' \
+  -d 'grant_type=password&username={{USERNAME}}&password={{PASS}}'
+
+
+curl -k -v -H 'Content-type: application/json' -H "authorization: Basic {{base64([myprogramming_tech_micro]:[Osps2QSIVTEd5WaHj25NeRWllYkyCp6Y])}}"  http://localhost:8080/api/product/
+ 
+
+
+-d "grant_type=authorization_code&code=362ad374-735c-4f69-aa8e-bf384f8602de&redirect_uri=http://example.com/oauth&client_id=myClientID&client_secret=myClientPassword"
+
+-d "grant_type=Client Credentials&code=Osps2QSIVTEd5WaHj25NeRWllYkyCp6Y&redirect_uri=http://localhost:8180/realms/myprogramming_tech_micro/protocol/openid-connect/token"
+
+
+
+
+
+curl https://reqbin.com/echo/get/json
+   -H "Accept: application/json"
+   -H "Authorization: Bearer {token}"
+
+Curl POST request with a Bearer Token Example
+curl -X POST [URL]
+   -H "Authorization: Bearer {token}"
+   -d "[post data]"
+
+Where:
+-X, --request: HTTP method to use when communicating with the server
+-H, --header: HTTP headers to send to the server with a POST request
+-d, --data: Data to be sent to the server using a POST request
+
+curl -H 'Accept: application/json' -H "Authorization: Bearer ya29.a0AfH6SMDe0-ToZWsfUpgPYw2BxHMIU8yRgW3-RiV0yBTjOZJZzOQVp3os3Kh2weJ50AHS_3oPvullLs_wfonlBMo37KabiO7-VJ6G3XbJQ37_ABpikL-tpMrlou3koA67lAiMY3exFY70zT5v7idlT8FDift1kg" \
+https://people.googleapis.com/v1/people/me?personFields=names
+
+
+curl -X POST -u "myClientID:password" -d "grant_type=client_credentials" http://host1.example.com:8080/openam/oauth2/access_token
+
+
+
+
+
+curl -u "spring-cloudclient-programing-teq-micro:Osps2QSIVTEd5WaHj25NeRWllYkyCp6Y" -d "grant_type=client_credentials" http://localhost:8180/realms/myprogramming_tech_micro/protocol/openid-connect/token
+
+curl -H "Accept: application/json"  -H "Authorization: Bearer " http://localhost:8080/api/product/
+
+
+curl -X POST -H "Accept: application/json"  -H "Authorization: Bearer " --header "Content-Type: application/json" -d '{"orderLineItemsDtoList":[{"skuCode":"iphone_13","price":300000000,"quantity":3}]}' http://localhost:8080/api/order/
+
+
+
+
+
+curl -i -X POST -H 'spring-cloud-client-programing-teq-micro:Osps2QSIVTEd5WaHj25NeRWllYkyCp6Y' -d 'grant_type=client_credentials' http://localhost:8180/realms/myprogramming_tech_micro/protocol/openid-connect/token
+
+
+
+
+
+curl -i -X POST 'http://localhost:8180/realms/myprogramming_tech_micro/protocol/openid-connect/token' -H "authorization: Basic {{base64([spring-cloud-client-programing-teq-micro]:[Osps2QSIVTEd5WaHj25NeRWllYkyCp6Y])}}" -H 'content-type: application/json' -d 'grant_type=client_credentials'
+
+
+
+
 
 
 

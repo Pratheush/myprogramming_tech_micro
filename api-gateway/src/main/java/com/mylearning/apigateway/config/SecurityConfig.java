@@ -16,11 +16,11 @@ public class SecurityConfig {
     @Bean
     public SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity serverHttpSecurity) {
         /*
-        here /eureka/** mathcing path predicate will be permitted i.e. when retrieving the css , javascript and all other resources of eureka will be permitted and will not be authenticated
+        here /eureka/** matching path predicate will be permitted i.e. when retrieving the css , javascript and all other resources of eureka will be permitted and will not be authenticated
         as we don't want to send some kind of token with the request for css , javascript of eureka so fot that we are excluding the calls regarding those using /eureka/**
         and all other incoming calls or incoming request through api-gateway will be authenticated
          */
-         */
+
         serverHttpSecurity
                 .csrf().disable() // we are disabling it as we are communicating through resp-api through the postman client or we do curl
                 .authorizeExchange(exchange ->  // we are exchanging information by permiting all the matching "/eureka/**" request and all other requests to other micro-services through api-gateway will be authenticated using authorization-server(Keycloak)
