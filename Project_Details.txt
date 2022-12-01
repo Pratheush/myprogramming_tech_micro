@@ -194,8 +194,11 @@ curl -X POST --header "Content-Type: application/json" -d '{"orderLineItemsDtoLi
 
 
 
+Osps2QSIVTEd5WaHj25NeRWllYkyCp6Y
 
-
+"issuer": "http://localhost:8180/realms/myprogramming_tech_micro",
+authorization_endpoint": "http://localhost:8180/realms/myprogramming_tech_micro/protocol/openid-connect/auth",
+"token_endpoint": "http://localhost:8180/realms/myprogramming_tech_micro/protocol/openid-connect/token
 
 
 

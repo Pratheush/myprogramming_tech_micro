@@ -32,6 +32,12 @@ public class OrderService {
     private final WebClient.Builder webClientBuilder;
 
     public void placeOrder(OrderRequest orderRequest) {
+        /*
+        placeOrder(orderRequest) :: accepting orderrequest dto which contains list of OrderLineItemsDto
+        to extract OrderLineItemsDto and then set OrderLineItems using builder pattern and setting it to order
+        to get the list of skucodes of each OrderLineItems to use skucodes to check and verify and validate availabality of product
+        with the Inventory-Service before placing the order using InventoryResponse as dto here in Order-Service
+         */
         Order order = new Order();
         order.setOrderNumber(UUID.randomUUID().toString());
 
@@ -42,12 +48,15 @@ public class OrderService {
 
         order.setOrderLineItemsList(orderLineItems);
 
-        // call Inventory-service and place order if product is in stock
+        // CALLING INVENTORY-SERVICE AND PLACING ORDER IF PRODUCT IS-IN-STOCK
+
+        // collecting all the skucodes from the OrderLineItems of order in order to use it to verify the availabality of product by getting the response from Inventory-Service
         List<String> skuCodes=order.getOrderLineItemsList()
                 .stream()
                 .map(OrderLineItems::getSkuCode)
                 .collect(Collectors.toList());
 
+        // getting response from Inventory-Service to collect isInStock details for each OrderLineItems of an order
         InventoryResponse[] responses=webClientBuilder.build().get()
                         .uri(inventoryUrl,
                                 uriBuilder -> uriBuilder.queryParam("skuCode",skuCodes).build())
@@ -55,7 +64,7 @@ public class OrderService {
                                         .bodyToMono(InventoryResponse[].class)
                                                 .block();
 
-        // when all the products isInStock is true in InventoryResponse then only below line of code will return true
+        // when all the products of the order we place isInStock is true in InventoryResponse then only below line of code will return true
         boolean allProductsInStock= Arrays.stream(responses).allMatch(InventoryResponse::isInStock);
 
         if(allProductsInStock){
@@ -65,6 +74,7 @@ public class OrderService {
         }
     }
 
+    // mapping the OrderLineItemsDto to OrderLineItems
     private OrderLineItems mapToDto(OrderLineItemsDto orderLineItemsDto) {
         OrderLineItems orderLineItems = new OrderLineItems();
         orderLineItems.setPrice(orderLineItemsDto.getPrice());

@@ -14,8 +14,8 @@ public class WebClientConfig {
     }*/
 
     @Bean
-    @LoadBalanced
-    public WebClient.Builder webClientBuilder(){
+    @LoadBalanced   // enabling client-side load balancing for distributing traffic among different instances ::
+    public WebClient.Builder webClientBuilder(){     // here order-service is client and inventory-service is server to connect where we use this loadbalancing
         return WebClient.builder();
     }
 }
