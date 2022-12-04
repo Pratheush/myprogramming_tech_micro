@@ -6,6 +6,7 @@ import com.mylearning.orderservice.dto.OrderRequest;
 import com.mylearning.orderservice.model.Order;
 import com.mylearning.orderservice.model.OrderLineItems;
 import com.mylearning.orderservice.repository.OrderRepository;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,7 +32,7 @@ public class OrderService {
     //@Autowired
     private final WebClient.Builder webClientBuilder;
 
-    public void placeOrder(OrderRequest orderRequest) {
+    public String placeOrder(OrderRequest orderRequest) {
         /*
         placeOrder(orderRequest) :: accepting orderrequest dto which contains list of OrderLineItemsDto
         to extract OrderLineItemsDto and then set OrderLineItems using builder pattern and setting it to order
@@ -69,6 +70,7 @@ public class OrderService {
 
         if(allProductsInStock){
             orderRepository.save(order);
+            return "Order Placed Successfully";
         } else {
             throw new IllegalArgumentException("Product is not in stock, please try again later");
         }
