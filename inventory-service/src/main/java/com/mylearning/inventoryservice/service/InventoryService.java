@@ -28,9 +28,9 @@ public class InventoryService {
     @SneakyThrows   // never use this SneakyThrows in production use Try-Catch instead
     public List<InventoryResponse> isInStock(List<String> skuCode) {
         // this Thread.sleep() is used to generate TimeOutException to use @TimeLimiter(name = UNSTABLE_PLACE_ORDER) which is implemented in OrderController.
-        log.info("InventoryService wait started");
-        Thread.sleep(10000);
-        log.info("InventoryService wait stopped");
+        //log.info("InventoryService wait started");
+        //Thread.sleep(10000);
+        //log.info("InventoryService wait stopped");
         return inventoryRepository.findBySkuCodeIn(skuCode).stream()
                 .map(inventory -> InventoryResponse.builder()
                         .skuCode(inventory.getSkuCode())

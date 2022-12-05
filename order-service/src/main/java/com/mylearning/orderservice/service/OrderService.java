@@ -3,6 +3,7 @@ package com.mylearning.orderservice.service;
 import com.mylearning.orderservice.dto.InventoryResponse;
 import com.mylearning.orderservice.dto.OrderLineItemsDto;
 import com.mylearning.orderservice.dto.OrderRequest;
+import com.mylearning.orderservice.event.OrderPlacedEvent;
 import com.mylearning.orderservice.model.Order;
 import com.mylearning.orderservice.model.OrderLineItems;
 import com.mylearning.orderservice.repository.OrderRepository;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import brave.Span;
 import brave.Tracer;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -44,6 +46,8 @@ public class OrderService {
 
     //@Autowired
     private final WebClient.Builder webClientBuilder;
+
+    private final KafkaTemplate<String, OrderPlacedEvent> kafkaTemplate;
 
     public String placeOrder(OrderRequest orderRequest) {
         /*
@@ -91,6 +95,12 @@ public class OrderService {
 
             if (allProductsInStock) {
                 orderRepository.save(order);
+
+                // we can also define the notification topic as the default topic for order service so if multiple messages are sending to kafka so instead of typing this
+              // notification topic for every message we can define this notification topic as default topic so that springboot will understand we have to always send the messages unless we explicitly provide
+            // a different topic name so springboot will understand that it should always send the messages to this notification topic
+                kafkaTemplate.send("notificationTopic", new OrderPlacedEvent(order.getOrderNumber()));
+
                 return "Order Placed Successfully";
             } else {
                 throw new IllegalArgumentException("Product is not in stock, please try again later");
