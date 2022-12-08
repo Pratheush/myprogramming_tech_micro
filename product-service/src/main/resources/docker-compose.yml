@@ -1,0 +1,42 @@
+version: '3.8'
+services:
+  ## Mongo Docker Compose Config
+  mymongodb:
+    container_name: mymongodb
+    image: mongo:latest
+    restart: always
+    ports:
+      - "27017:27017"
+    expose:
+      - "27017"
+    networks:
+      - app-tier
+    volumes:
+      #- ./mongo-data:/data/db
+      #- ./mongo-volume:/data/db
+      - /home/pratheush/jlab/my_idea_projects/myprogramming_tech_micro/proddb/:/data/db
+    environment:
+      - MONGO_INITDB_DATABASE=productss
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=password
+
+    ## Product-Service Docker Compose Config
+  myproduct-service:
+    container_name: myproduct-service
+    image: programming_tech/initial-setup/mmv1-product-service:0.0.1-SNAPSHOT
+    ports:
+      - "8080:8086"
+    expose:
+      - "8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=doker
+      - SPRING_DATA_MONGODB_AUTHENTICATION-DATABASE=admin
+      - SPRING_DATA_MONGODB_URI=mongodb://admin:password@mymongodb:27017/productss?authSource=admin
+    depends_on:
+      - mymongodb
+    networks:
+      - app-tier
+
+networks:
+  app-tier:
+    driver: bridge
