@@ -1,0 +1,15 @@
+---
+version: '3.8'
+services:
+  ## Order-Service Docker Compose Config
+  myorder-service:
+    container_name: myorder-service
+    image: programming_tech/initial-setup/mmv1-order-service:0.0.1-SNAPSHOT
+    ports:
+      - "8080:8080"
+    expose:
+      - "8080"
+    environment:
+      - SPRING_PROFILES_ACTIVE=doker
+      - SPRING_DATASOURCE_URL=jdbc:h2:file:./only_orderdb/only-ordersdata
+      - SPRING_JPA_HIBERNATE_DDL-AUTO=update
